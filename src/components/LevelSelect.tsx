@@ -7,6 +7,8 @@ interface LevelSelectProps {
   onSelectLevel: (level: Level) => void;
   onOpenEditor: () => void;
   onImportLevel: () => void;
+  onOpenSandbox: () => void;
+  onOpenSandboxGallery: () => void;
   customLevels: Level[];
 }
 
@@ -33,6 +35,8 @@ export const LevelSelect: React.FC<LevelSelectProps> = ({
   onSelectLevel,
   onOpenEditor,
   onImportLevel,
+  onOpenSandbox,
+  onOpenSandboxGallery,
   customLevels,
 }) => {
   const progress = useMemo(() => loadProgress(), []);
@@ -87,9 +91,15 @@ export const LevelSelect: React.FC<LevelSelectProps> = ({
             </div>
           </div>
 
-          <div className="flex gap-4 justify-center mt-8">
+          <div className="flex gap-4 justify-center mt-8 flex-wrap">
             <button onClick={onOpenEditor} className="btn-primary">
               🎨 关卡编辑器
+            </button>
+            <button onClick={onOpenSandbox} className="btn-primary bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+              🎨 自由沙盒
+            </button>
+            <button onClick={onOpenSandboxGallery} className="btn-secondary">
+              📚 作品库
             </button>
             <button onClick={onImportLevel} className="btn-secondary">
               📥 导入关卡

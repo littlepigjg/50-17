@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import type { Level, GameMode } from './engine/types';
+import type { Level, GameMode, SandboxCreation } from './engine/types';
 import { LEVELS } from './engine/levels';
 import { loadCustomLevels, deleteCustomLevel, importLevelFromJson, saveCustomLevel } from './engine/storage';
 import { LevelSelect } from './components/LevelSelect';
 import { GameScreen } from './components/GameScreen';
 import { LevelEditor } from './components/LevelEditor';
+import { SandboxMode } from './components/SandboxMode';
+import { SandboxGallery } from './components/SandboxGallery';
 import { v4 as uuidv4 } from 'uuid';
 
 const ImportModal: React.FC<{
@@ -80,6 +82,7 @@ const App: React.FC = () => {
   const [customLevels, setCustomLevels] = useState<Level[]>([]);
   const [showImport, setShowImport] = useState(false);
   const [editLevel, setEditLevel] = useState<Level | undefined>(undefined);
+  const [editCreation, setEditCreation] = useState<SandboxCreation | undefined>(undefined);
 
   useEffect(() => {
     setCustomLevels(loadCustomLevels());
@@ -121,6 +124,20 @@ const App: React.FC = () => {
     setMode('editor');
   };
 
+  const handleOpenSandbox = () => {
+    setEditCreation(undefined);
+    setMode('sandbox');
+  };
+
+  const handleOpenSandboxGallery = () => {
+    setMode('sandbox-gallery');
+  };
+
+  const handleOpenSandboxCreation = (creation: SandboxCreation) => {
+    setEditCreation(creation);
+    setMode('sandbox');
+  };
+
   const handleImportDone = () => {
     refreshCustomLevels();
     setShowImport(false);
@@ -135,6 +152,8 @@ const App: React.FC = () => {
           onSelectLevel={handleSelectLevel}
           onOpenEditor={handleOpenEditor}
           onImportLevel={() => setShowImport(true)}
+          onOpenSandbox={handleOpenSandbox}
+          onOpenSandboxGallery={handleOpenSandboxGallery}
           customLevels={customLevels}
         />
       )}
@@ -164,6 +183,22 @@ const App: React.FC = () => {
             setMode('play');
           }}
           editLevel={editLevel}
+        />
+      )}
+
+      {mode === 'sandbox' && (
+        <SandboxMode
+          onBack={() => setMode('menu')}
+          onOpenGallery={handleOpenSandboxGallery}
+          editCreation={editCreation}
+        />
+      )}
+
+      {mode === 'sandbox-gallery' && (
+        <SandboxGallery
+          onBack={() => setMode('menu')}
+          onNewCreation={handleOpenSandbox}
+          onOpenCreation={handleOpenSandboxCreation}
         />
       )}
 

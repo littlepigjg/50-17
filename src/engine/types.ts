@@ -101,7 +101,7 @@ export interface LevelProgress {
   bestSteps: number;
 }
 
-export type GameMode = 'menu' | 'play' | 'editor';
+export type GameMode = 'menu' | 'play' | 'editor' | 'sandbox' | 'sandbox-gallery';
 
 export type EditorTool =
   | 'select'
@@ -111,3 +111,20 @@ export type EditorTool =
   | 'star'
   | 'pit'
   | 'erase';
+
+export interface SandboxCreation {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: number;
+  updatedAt: number;
+  width: number;
+  height: number;
+  grid: CellType[][];
+  start?: Position;
+  startDirection?: Direction;
+  goal?: Position;
+  stars: Position[];
+  author?: string;
+  tags?: string[];
+}
